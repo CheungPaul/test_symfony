@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Etudiant index{% endblock %}
+
+{% block body %}
+    <h1>Etudiant index</h1>
+    <form target="{{path('app_etudiant_filtre')}}" method="POST">
+        <select name="sex">
+            <option value="0">DJEDJEJ</option>
+            <option value="1">Hemme</option>
+            <option value="2">Fomme</option>
+            <option value="3">Menu secret Mcdonald's</option>
+        </select>
+        <input type="number" name="year"
+               min="2018" max="2028">
+        <input type="number" name="month"
+               min="01" max="12">
+        <input type="number" name="day"
+               min="01" max="31">
+
+        <input type="submit" name="boutton">
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Sex</th>
+                <th>Anniversaire</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for etudiant in etudiants %}
+            <tr>
+                <td>{{ etudiant.id }}</td>
+                <td>{{ etudiant.nom }}</td>
+                <td>{{ etudiant.prenom }}</td>
+                <td>{% if etudiant.sex==0 %}
+                        Autre
+                    {% elseif etudiant.sex==1 %}
+                        Homme
+                    {% else %}
+                        Femme
+                    {% endif %}
+                </td>
+                <td>{{ etudiant.anniversaire ? etudiant.anniversaire|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_etudiant_show', {'id': etudiant.id}) }}">show</a>
+                    <a href="{{ path('app_etudiant_edit', {'id': etudiant.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_etudiant_new') }}">Create new</a>
+{% endblock %}
